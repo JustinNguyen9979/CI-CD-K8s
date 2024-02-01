@@ -9,11 +9,12 @@ jobs:
     executor: node/default
     steps:
       - checkout
-      - node/install-packages:
-          pkg-manager: yarn
+      - run:
+          name: Install Dependencies
+          command: npm install
       - run:
           name: Run Code Linting and Tests
-          command: yarn lint && yarn test
+          command: npm run lint && npm test
 
   build-and-push:
     environment:
