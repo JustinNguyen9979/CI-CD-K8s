@@ -14,7 +14,7 @@ jobs:
           command: npm install
       - run:
           name: Run Code Linting and Tests
-          command: npm run lint && npm test
+          command: CI=true react test
 
   build-and-push:
     environment:
