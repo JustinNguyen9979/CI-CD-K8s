@@ -5,6 +5,18 @@ orbs:
   docker: circleci/docker@2.5.0
 
 jobs:
+  test:
+    docker:
+      - image: circleci/node:14
+    steps:
+      - checkout
+      - run:
+          name: Install Dependencies
+          command: npm install
+      - run:
+          name: Run Tests
+          command: npm test
+
   build-and-push:
     environment:
       DOCKER_IMAGE: 997909799/ci-cd-k8s
@@ -30,7 +42,14 @@ jobs:
 workflows:
   test-build-deploy:
     jobs:
+      - test:
+          filters:
+            branches:
+              only: 
+                - main
       - build-and-push:
+          requires:
+            - test
           filters:
             branches:
               only: 
