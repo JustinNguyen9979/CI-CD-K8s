@@ -5,17 +5,15 @@ orbs:
   docker: circleci/docker@2.5.0
 
 jobs:
-  test:
-    docker:
-      - image: circleci/node:14
+  check-code:
+    executor: node/default
     steps:
       - checkout
+      - node/install-packages:
+          pkg-manager: yarn
       - run:
-          name: Install Dependencies
-          command: npm install
-      - run:
-          name: Run Tests
-          command: npm test
+          name: Run Code Linting and Tests
+          command: yarn lint && yarn test
 
   build-and-push:
     environment:
@@ -42,14 +40,14 @@ jobs:
 workflows:
   test-build-deploy:
     jobs:
-      - test:
+      - check-code:
           filters:
             branches:
               only: 
                 - main
       - build-and-push:
           requires:
-            - test
+            - check-code
           filters:
             branches:
               only: 
