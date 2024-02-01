@@ -2,9 +2,39 @@ version: 2.1
 
 orbs:
   node: circleci/node@4.7
+  docker: circleci/docker@24.0.5
+
+jobs:
+  build-and-push:
+    environment:
+      DOCKER_IMAGE: 997909799/ci-cd-k8s
+      DOCKER_TAG: latest
+    executor: docker/docker
+    steps:
+      - setup_remote_docker
+      - checkout
+      - docker/check:
+          docker-username: DOCKER_USER
+          docker-password: DOCKER_PASSWORD
+      - docker/build:
+          image: $DOCKER_IMAGE
+          tag: $DOCKER_TAG
+      - docker/push:
+          digest-path: /tmp/digest.txt
+          image: $DOCKER_IMAGE
+          tag: $DOCKER_TAG
+      - run:
+          command: |
+            echo "Digest is: $(</tmp/digest.txt)"
 
 workflows:
-  node-tests:
+  test-build-deploy:
     jobs:
-      - build
-      - test
+      - node/test
+      - build-and-push:
+          requires:
+            - node/test
+          filters:
+            branches:
+              only: 
+                - main
