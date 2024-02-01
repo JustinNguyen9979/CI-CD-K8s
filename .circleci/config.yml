@@ -6,7 +6,8 @@ orbs:
 
 jobs:
   check-code:
-    executor: node/default
+    docker:
+      - image: circleci/node:14
     steps:
       - checkout
       - run:
