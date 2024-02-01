@@ -13,8 +13,8 @@ jobs:
           name: Install Dependencies
           command: npm install
       - run:
-          name: Run Code Linting and Tests
-          command: CI=true react test
+          name: Run Tests
+          command: npm test
 
   build-and-push:
     environment:
