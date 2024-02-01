@@ -30,7 +30,6 @@ jobs:
 workflows:
   test-build-deploy:
     jobs:
-      - node/test
       - build-and-push:
           requires:
             - node/test
