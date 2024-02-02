@@ -1,6 +1,6 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
-metada:
+metadata:
   name: ci-cd-app
   namespace: argocd
 spec:
@@ -18,6 +18,6 @@ spec:
   syncPolicy:
     automated:
       prune: true
-      selHeal: true
+      selfHeal: true
     syncOptions:
       - CreateNamespace=true
