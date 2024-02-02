@@ -1,0 +1,23 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metada:
+  name: ci-cd-app
+  namespace: argocd
+spec:
+  project: default
+
+  source:
+    path: ci-cd-app
+    repoURL: 'https://github.com/JustinNguyen9979/CI-CD-K8s.git'
+    targetRevision: HEAD
+  destination:
+    name: ''
+    namespace: ci-cd-app
+    server: 'https://kubernetes.default.svc'
+
+  syncPolicy:
+    automated:
+      prune: true
+      selHeal: true
+    syncOptions:
+      - CreateNamespace=true
